@@ -27,18 +27,23 @@ namespace KinectAnalysis
                         Console.WriteLine("ファイル名を入力してください(.jsonは不要)");
                         var fileName = Console.ReadLine();
                         fileName += ".json";
-                        using (var sr = new StreamReader(fileName))
-                        {
-                            jsonString = sr.ReadLine();
-                        }
+
+                        jsonString = GetJsonFile(fileName);
 
                         var faceInfo = JsonConvert.DeserializeObject<FaceInfo>(jsonString);
 
                         GetAverageRotationScore(faceInfo);
 
                         break;
+
+                    case 2:
+
+                        break;
                     case 0:
                         return;
+                    default:
+                        Console.WriteLine("数字がちゃうで");
+                        break;
                 }
                 Console.WriteLine();
             }
@@ -57,6 +62,16 @@ namespace KinectAnalysis
 
             for (int i = 0; i < PYR.Length; i++)
                 Console.WriteLine($"[{i}] {PYR[i]}");
+        }
+
+        private static string GetJsonFile(string filePath)
+        {
+            string json;
+            using (var sr = new StreamReader(filePath))
+            {
+                json = sr.ReadLine();
+            }
+            return json;
         }
     }
 }
