@@ -12,6 +12,7 @@ namespace KinectAnalysis
     class Program
     {
         private static string jsonString;
+        private static int[] PYR = new int[3];
         static void Main(string[] args)
         {
             Console.WriteLine("ファイル名を入力してください(同一ディレクトリに配置されてたら)");
@@ -22,6 +23,18 @@ namespace KinectAnalysis
             }
 
             var faceInfo = JsonConvert.DeserializeObject<FaceInfo>(jsonString);
+
+            foreach(var face in faceInfo.faceInfos)
+            {
+                PYR[0] += face.pitch;
+                PYR[1] += face.yaw;
+                PYR[2] += face.roll;
+            }
+            for (int i = 0; i < PYR.Length; i++)
+                PYR[i] /= faceInfo.faceInfos.Count;
+
+            for (int i = 0; i < PYR.Length; i++)
+                Console.WriteLine($"[{i}] {PYR[i]}");
 
             Console.ReadLine();
         }
