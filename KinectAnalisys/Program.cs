@@ -15,8 +15,9 @@ namespace KinectAnalysis
         private static int[] PYR = new int[3];
         static void Main(string[] args)
         {
-            Console.WriteLine("ファイル名を入力してください(同一ディレクトリに配置されてたら)");
+            Console.WriteLine("ファイル名を入力してください(.jsonは不要)");
             var fileName = Console.ReadLine();
+            fileName += ".json";
             using(var sr = new StreamReader(fileName))
             {
                 jsonString = sr.ReadLine();
@@ -26,9 +27,9 @@ namespace KinectAnalysis
 
             foreach(var face in faceInfo.faceInfos)
             {
-                PYR[0] += face.pitch;
-                PYR[1] += face.yaw;
-                PYR[2] += face.roll;
+                PYR[0] += Math.Abs(face.pitch);
+                PYR[1] += Math.Abs(face.yaw);
+                PYR[2] += Math.Abs(face.roll);
             }
             for (int i = 0; i < PYR.Length; i++)
                 PYR[i] /= faceInfo.faceInfos.Count;
